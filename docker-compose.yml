@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  qooz-app:
+    image: docker.io/library/node:18-alpine
+    container_name: qooz-web
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src/qooz:/app
+    working_dir: /app
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8090/qooz/api
+      - NEXT_PUBLIC_POLL_INTERVAL=2000
+      - NEXT_PUBLIC_GAME_TIMEOUT=30000
+    command: sh -c "npm install && npm run start"
+    depends_on:
+      - qooz-api
+    networks:
+      - qooz-net
+    restart: unless-stopped
+
+  qooz-api:
+    image: docker.io/library/php:8.2-apache
+    container_name: qooz-api
+    ports:
+      - "8090:80"
+    volumes:
+      - ./src/qooz:/var/www/html:z
+      - ./src/qooz/api:/var/www/html/api:z
+    environment:
+      - DB_HOST=qooz-db
+      - DB_NAME=qooz_db
+      - DB_USER=qooz_user
+      - DB_PASS=qooz_pass_2024
+    depends_on:
+      - qooz-db
+    networks:
+      - qooz-net
+    restart: unless-stopped
+    command: >
+      bash -c "a2enmod rewrite headers &&
+               echo 'DirectoryIndex index.php index.html' > /var/www/html/.htaccess &&
+               apache2-foreground"
+
+  qooz-db:
+    image: docker.io/library/mariadb:10.11
+    container_name: qooz-db
+    environment:
+      MYSQL_ROOT_PASSWORD: qooz_root_pass
+      MYSQL_DATABASE: qooz_db
+      MYSQL_USER: qooz_user
+      MYSQL_PASSWORD: qooz_pass_2024
+    ports:
+      - "3306:3306"
+    volumes:
+      - qooz-dbdata:/var/lib/mysql
+    networks:
+      - qooz-net
+    restart: unless-stopped
+
+  qooz-pma:
+    image: docker.io/library/phpmyadmin:latest
+    container_name: qooz-pma
+    ports:
+      - "8091:80"
+    environment:
+      PMA_HOST: qooz-db
+      PMA_USER: root
+      PMA_PASSWORD: qooz_root_pass
+    depends_on:
+      - qooz-db
+    networks:
+      - qooz-net
+    restart: unless-stopped
+
+volumes:
+  qooz-dbdata:
+
+networks:
+  qooz-net:
+    driver: bridge
