@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+:root {
+  --qooz-purple: #8B5CF6;
+  --qooz-blue: #3B82F6;
+  --qooz-yellow: #F59E0B;
+  --qooz-red: #EF4444;
+  --qooz-green: #10B981;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+.qooz-gradient {
+  background: linear-gradient(135deg, var(--qooz-purple) 0%, var(--qooz-blue) 100%);
+}
+
+.qooz-btn {
+  @apply px-6 py-3 rounded-xl font-bold text-white transition-all duration-200;
+  @apply hover:scale-105 active:scale-95 shadow-lg;
+}
+
+.qooz-btn-primary {
+  @apply bg-purple-600 hover:bg-purple-700;
+}
+
+.qooz-btn-blue {
+  @apply bg-blue-500 hover:bg-blue-600;
+}
+
+.qooz-btn-yellow {
+  @apply bg-yellow-500 hover:bg-yellow-600 text-black;
+}
+
+.qooz-btn-red {
+  @apply bg-red-500 hover:bg-red-600;
+}
+
+.qooz-btn-green {
+  @apply bg-green-500 hover:bg-green-600;
+}
+
+.qooz-card {
+  @apply bg-white rounded-2xl shadow-2xl p-6;
+}
+
+.qooz-input {
+  @apply w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500;
+  @apply focus:outline-none transition-colors text-lg;
+}
+
+.qooz-title {
+  @apply text-4xl md:text-6xl font-black text-white text-center drop-shadow-lg;
+}
+
+/* Option button styles for player */
+.option-btn {
+  @apply rounded-2xl flex items-center justify-center text-4xl md:text-6xl font-black text-white;
+  @apply transition-all duration-150 active:scale-90 shadow-xl;
+}
+
+.option-btn-blue { @apply bg-blue-500 hover:bg-blue-600; }
+.option-btn-yellow { @apply bg-yellow-500 hover:bg-yellow-600 text-black; }
+.option-btn-purple { @apply bg-purple-600 hover:bg-purple-700; }
+.option-btn-red { @apply bg-red-500 hover:bg-red-600; }
+
+/* Animations */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.5); }
+  50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.8); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.5s ease-out;
+}
+
+@keyframes bounce-in {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.5s ease-out;
+}
+
+/* Countdown animation */
+@keyframes countdown-pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+.animate-countdown {
+  animation: countdown-pulse 1s ease-out;
+}
+
+/* Stagger children */
+.stagger-children > * {
+  animation: slide-up 0.4s ease-out backwards;
+}
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+
+/* Host screen styles */
+.host-question {
+  @apply text-3xl md:text-5xl font-bold text-gray-800 leading-tight;
+}
+
+.host-option {
+  @apply text-xl md:text-3xl font-bold text-white p-4 rounded-xl;
+}
+
+/* Player screen styles */
+.player-option {
+  @apply h-32 md:h-48 rounded-2xl flex items-center justify-center;
+  @apply text-5xl md:text-7xl font-black text-white;
+  @apply transition-all duration-150 active:scale-95 shadow-2xl;
+}

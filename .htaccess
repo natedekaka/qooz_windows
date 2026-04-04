@@ -1,0 +1,6 @@
+Options -Indexes +FollowSymLinks
+RewriteEngine On
+RewriteBase /qooz/
+
+# Allow all requests
+Require all granted
