@@ -43,7 +43,7 @@ services:
     container_name: qooz-db
     environment:
       MYSQL_ROOT_PASSWORD: qooz_root_pass
-      MYSQL_DATABASE: qooz_db
+      MYSQL_DATABASE: qooz_windows_db
       MYSQL_USER: qooz_user
       MYSQL_PASSWORD: qooz_pass_2024
     ports:

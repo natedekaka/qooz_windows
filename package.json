@@ -2,11 +2,17 @@
   "name": "qooz",
   "version": "0.1.0",
   "private": true,
+  "main": "electron/main.js",
+  "author": "Qooz Team",
+  "description": "Qooz - Kuis Interaktif Real-time",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "electron:dev": "npm run build && electron .",
+    "electron:build": "npm run build && electron-builder --win --dir",
+    "electron:dist": "npm run build && electron-builder --win"
   },
   "dependencies": {
     "@supabase/ssr": "^0.9.0",
@@ -16,7 +22,8 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "tailwind-merge": "^3.5.0",
-    "zustand": "^5.0.11"
+    "zustand": "^5.0.11",
+    "electron-log": "^5.3.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -26,6 +33,45 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "electron": "^35.1.5",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.qooz.app",
+    "productName": "Qooz",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "out/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "api",
+        "to": "api"
+      },
+      {
+        "from": "mysql-schema.sql",
+        "to": "mysql-schema.sql"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Qooz"
+    }
   }
 }
