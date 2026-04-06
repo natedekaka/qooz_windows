@@ -272,20 +272,22 @@ export default function GameHostPage() {
         {/* Scrollable Content */}
         <div className="flex-1 p-4 md:p-6 overflow-auto" ref={contentRef}>
           <div className="max-w-4xl mx-auto">
-            {/* Question */}
+            {/* Question - auto scale based on content length */}
             <div className="qooz-card mb-4 md:mb-6">
-              <h1 className="host-question text-center text-xl md:text-3xl lg:text-4xl">
-                {currentQuestion.teks_soal}
-              </h1>
+              <div className="bg-purple-100 rounded-xl px-3 py-2 md:px-4 md:py-3">
+                <h1 className={`host-question text-center ${currentQuestion.teks_soal.length > 100 ? 'text-sm md:text-xl lg:text-2xl' : currentQuestion.teks_soal.length > 50 ? 'text-lg md:text-2xl lg:text-3xl' : 'text-xl md:text-3xl lg:text-4xl'}`}>
+                  {currentQuestion.teks_soal}
+                </h1>
+              </div>
             </div>
 
-            {/* Options Grid */}
-            <div className="grid grid-cols-2 gap-3 md:gap-4 mb-4">
+            {/* Options Grid - scrollable */}
+            <div className="grid grid-cols-2 gap-3 md:gap-4 mb-4 max-h-[35vh] overflow-y-auto">
               {[currentQuestion.opsi_1, currentQuestion.opsi_2, currentQuestion.opsi_3, currentQuestion.opsi_4].map((opt, idx) => (
                 <div key={idx} className="relative">
-                  <div className={`host-option ${optionColors[idx]} text-base md:text-xl lg:text-2xl`}>
-                    <span className="mr-2 md:mr-3">{optionLabels[idx]}</span>
-                    <span className="truncate">{opt}</span>
+                  <div className={`host-option ${optionColors[idx]} ${opt.length > 80 ? 'text-xs md:text-sm lg:text-base h-28 md:h-32 lg:h-36' : opt.length > 40 ? 'text-sm md:text-lg lg:text-xl h-24 md:h-28 lg:h-32' : 'text-base md:text-xl lg:text-2xl h-24 md:h-28 lg:h-32'} flex items-start justify-start`}>
+                    <span className="mr-2 md:mr-3 shrink-0">{optionLabels[idx]}.</span>
+                    <span className="flex-1">{opt}</span>
                   </div>
                   <div className="absolute -top-2 -right-2 bg-white rounded-full shadow-lg px-2 py-1 font-bold text-gray-800 text-sm">
                     {answerCounts[idx]}
@@ -355,9 +357,15 @@ export default function GameHostPage() {
             {/* Correct Answer */}
             <div className="qooz-card text-center animate-bounce-in">
               <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-3">Jawaban Benar</h2>
-              <div className={`host-option ${optionColors[currentQuestion.jawaban_benar - 1]} inline-block text-lg md:text-2xl`}>
-                {optionLabels[currentQuestion.jawaban_benar - 1]}. {['opsi_1', 'opsi_2', 'opsi_3', 'opsi_4'].map(k => currentQuestion[k as keyof typeof currentQuestion])[currentQuestion.jawaban_benar - 1]}
-              </div>
+              {(() => {
+                const correctOpt = ['opsi_1', 'opsi_2', 'opsi_3', 'opsi_4'].map(k => currentQuestion[k as keyof typeof currentQuestion])[currentQuestion.jawaban_benar - 1] as string
+                const fontSize = correctOpt.length > 80 ? 'text-sm md:text-base' : correctOpt.length > 40 ? 'text-base md:text-lg' : 'text-lg md:text-2xl'
+                return (
+                  <div className={`host-option ${optionColors[currentQuestion.jawaban_benar - 1]} inline-block ${fontSize} text-left w-full`}>
+                    {optionLabels[currentQuestion.jawaban_benar - 1]}. {correctOpt}
+                  </div>
+                )
+              })()}
               <p className="text-gray-500 mt-3 text-sm md:text-base">
                 {totalAnswered > 0 
                   ? `${correctCount} dari ${totalAnswered} benar`

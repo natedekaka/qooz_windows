@@ -223,7 +223,7 @@ export default function PlayerGamePage() {
     return (
       <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 to-gray-800">
         {/* Top bar */}
-        <div className="p-3 md:p-4">
+        <div className="p-3 md:p-4 shrink-0">
           <div className="flex justify-between items-center text-white/80 text-sm md:text-base">
             <span>PIN: <span className="font-bold text-white">{pin}</span></span>
             <span className="font-bold text-xl md:text-2xl text-white">{timeLeft}s</span>
@@ -237,37 +237,44 @@ export default function PlayerGamePage() {
           </div>
         </div>
 
-        {/* Question */}
-        <div className="px-3 md:px-6 py-2">
-          <p className="text-white text-lg md:text-2xl font-bold text-center leading-tight">
-            {currentQuestion.teks_soal}
-          </p>
+        {/* Question - auto scale based on content length */}
+        <div className="px-3 md:px-6 py-2 min-h-[15vh] max-h-[30vh] overflow-y-auto">
+          <div className="bg-white/10 rounded-xl px-3 py-2 md:px-4 md:py-3">
+            <p className={`text-white font-bold text-center leading-tight ${currentQuestion.teks_soal.length > 100 ? 'text-base md:text-lg' : currentQuestion.teks_soal.length > 50 ? 'text-lg md:text-xl' : 'text-lg md:text-2xl'}`}>
+              {currentQuestion.teks_soal}
+            </p>
+          </div>
         </div>
 
-        {/* Answer buttons - 2x2 grid */}
-        <div className="flex-1 p-2 md:p-4 grid grid-cols-2 gap-2 md:gap-3">
-          {optionColors.map((color, idx) => (
-            <button
-              key={idx}
-              onClick={() => submitAnswer(idx + 1)}
-              disabled={hasAnswered}
-              className={`
-                ${color} 
-                rounded-2xl md:rounded-3xl 
-                flex items-center justify-center
-                font-black text-3xl md:text-5xl lg:text-6xl text-white
-                transition-all duration-150 active:scale-95
-                shadow-2xl
-                ${hasAnswered ? 'opacity-60 cursor-not-allowed' : 'hover:brightness-110'}
-              `}
-            >
-              {hasAnswered && selectedAnswer === idx + 1 ? (
-                <span className="text-4xl md:text-6xl">✓</span>
-              ) : (
-                <span className="mb-2 md:mb-4">{optionLabels[idx]}</span>
-              )}
-            </button>
-          ))}
+        {/* Answer buttons - 2x2 grid - scrollable for long options */}
+        <div className="p-2 md:p-4 grid grid-cols-2 gap-2 md:gap-3 overflow-y-auto content-start">
+          {optionColors.map((color, idx) => {
+            const opt = [currentQuestion.opsi_1, currentQuestion.opsi_2, currentQuestion.opsi_3, currentQuestion.opsi_4][idx] as string
+            const isLong = opt.length > 50
+            return (
+              <button
+                key={idx}
+                onClick={() => submitAnswer(idx + 1)}
+                disabled={hasAnswered}
+                className={`
+                  ${color} 
+                  rounded-2xl md:rounded-3xl 
+                  flex flex-col items-center justify-center
+                  font-black text-white
+                  transition-all duration-150 active:scale-95
+                  shadow-2xl
+                  h-28 md:h-36 lg:h-40
+                  ${hasAnswered ? 'opacity-60 cursor-not-allowed' : 'hover:brightness-110'}
+                `}
+              >
+                <span className={`text-white ${isLong ? 'text-xl md:text-2xl lg:text-3xl' : 'text-3xl md:text-5xl lg:text-6xl'} mb-1 md:mb-2`}>{optionLabels[idx]}</span>
+                <span className={`text-white text-center px-1 ${isLong ? 'text-xs md:text-sm' : 'text-sm md:text-base'}`}>{opt}</span>
+                {hasAnswered && selectedAnswer === idx + 1 && (
+                  <span className="text-4xl md:text-6xl">✓</span>
+                )}
+              </button>
+            )
+          })}
         </div>
 
         {/* Bottom status */}
