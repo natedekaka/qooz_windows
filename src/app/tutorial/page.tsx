@@ -31,7 +31,8 @@ qooz start
                 <h3 className="font-semibold text-purple-700">Langkah 2: Akses Aplikasi</h3>
                 <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
                   <li><strong>Di Laptop:</strong> http://localhost:3000</li>
-                  <li><strong>Di HP:</strong> http://192.168.18.126:3000</li>
+                  <li><strong>Di HP:</strong> http://[IP-LAPTOP]:3000</li>
+                  <li className="text-sm text-gray-500">Cek IP laptop dengan perintah: <code className="bg-gray-100 px-1">hostname -I</code> atau <code className="bg-gray-100 px-1">ip addr</code></li>
                   <li className="text-sm text-gray-500">Pastikan HP & laptop satu jaringan WiFi yang sama</li>
                 </ul>
               </div>
@@ -105,7 +106,7 @@ qooz start
               </li>
               <li className="flex gap-2">
                 <span className="font-bold text-blue-600">2.</span>
-                <span>Buka browser di HP, ketik: <strong>http://192.168.18.126:3000</strong></span>
+                <span>Buka browser di HP, ketik: <strong>http://[IP-LAPTOP]:3000</strong></span>
               </li>
               <li className="flex gap-2">
                 <span className="font-bold text-blue-600">3.</span>
@@ -216,7 +217,7 @@ qooz start
                 <h3 className="font-semibold text-gray-800">📱 Tidak bisa akses dari HP</h3>
                 <ul className="text-gray-600 mt-1 list-disc list-inside space-y-1">
                   <li>Pastikan HP & laptop satu jaringan WiFi</li>
-                  <li>Coba buka: <strong>http://192.168.18.126:3000</strong></li>
+                  <li>Coba buka: <strong>http://[IP-LAPTOP]:3000</strong></li>
                   <li>Cek firewall: <code className="bg-gray-100 px-1">sudo ufw disable</code></li>
                 </ul>
               </div>

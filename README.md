@@ -60,8 +60,10 @@ npm install
 
 Buka browser di HP, ketik IP laptop + port:
 ```
-http://192.168.x.x:3000
+http://[IP-LAPTOP]:3000
 ```
+
+Cek IP laptop dengan perintah: `hostname -I` atau `ip addr`
 
 > 💡 Pastikan HP dan laptop terhubung ke jaringan WiFi yang sama!
 
@@ -136,6 +138,9 @@ http://192.168.x.x:3000
 
 ### HP tidak bisa akses?
 ```bash
+# Cek IP laptop
+hostname -I
+
 # Disable firewall sementara (Linux)
 sudo ufw disable
 
