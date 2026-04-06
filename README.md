@@ -27,14 +27,45 @@ Qooz adalah platform kuis real-time yang memungkinkan guru membuat dan mengelola
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start - Windows
 
-### Prerequisites
-- Node.js 20+
-- Podman atau Docker
-- npm atau yarn
+### Opsi 1: Aplikasi Portable (MUDAH)
 
-### Installation
+1. Download folder `release/win-unpacked/` dari GitHub
+2. Klik dua kali `Qooz.exe`
+3. Selesai! Aplikasi langsung terbuka di browser
+
+> ⚠️ **Catatan**: Aplikasi membutuhkan server API. Gunakan Opsi A atau B di bawah.
+
+### Opsi 2: Menggunakan Docker Desktop
+
+1. Install [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop)
+2. Buka terminal Command Prompt/PowerShell di folder project
+3. Jalankan:
+   ```powershell
+   docker-compose up -d
+   ```
+
+### Opsi 3: Install Manual (XAMPP)
+
+1. Install [XAMPP](https://www.apachefriends.org/) (pilih versi PHP 8.2)
+2. Copy folder `api/` ke `C:\xampp\htdocs\qooz\api\`
+3. Buka phpMyAdmin (`http://localhost/phpmyadmin`)
+4. Buat database `qooz_db`
+5. Import file `mysql-schema.sql`
+6. Edit `.env.local` sesuai konfigurasi
+
+### Akses Aplikasi
+
+| Service | URL |
+|---------|-----|
+| 🌐 **Web App** | http://localhost:3000 |
+| 🔌 **API** | http://localhost:8090/qooz/api |
+| 🗄️ **Database** | http://localhost:8091 (phpMyAdmin) |
+
+---
+
+## 🚀 Quick Start - Linux
 
 ```bash
 # Clone repository
@@ -47,14 +78,6 @@ npm install
 # Start semua service
 ./install.sh start
 ```
-
-### Akses Aplikasi
-
-| Service | URL |
-|---------|-----|
-| 🌐 **Web App** | http://localhost:3000 |
-| 🔌 **API** | http://localhost:8090/qooz/api |
-| 🗄️ **Database** | http://localhost:8091 (phpMyAdmin) |
 
 ### Akses dari HP
 
@@ -136,7 +159,32 @@ Cek IP laptop dengan perintah: `hostname -I` atau `ip addr`
 
 ## 🔧 Troubleshooting
 
-### HP tidak bisa akses?
+### Windows
+
+**Container tidak jalan?**
+```powershell
+docker-compose down
+docker-compose up -d --build
+docker logs qooz-api
+```
+
+**Port sudah terpakai?**
+```powershell
+# Cari proses yang pakai port
+netstat -ano | findstr :3000
+
+# Stop proses
+taskkill /PID [NOMOR-PID] /F
+```
+
+**XAMPP tidak bisa start Apache?**
+- Buka XAMPP Control Panel
+- Klik config pada Apache
+- Edit `httpd.conf`, ubah port jika diperlukan
+
+### Linux
+
+**HP tidak bisa akses?**
 ```bash
 # Cek IP laptop
 hostname -I
@@ -149,14 +197,14 @@ sudo ufw allow 3000/tcp
 sudo ufw allow 8090/tcp
 ```
 
-### Container tidak jalan?
+**Container tidak jalan?**
 ```bash
 podman compose down
 podman compose up -d --build
 podman logs qooz-api
 ```
 
-### Port sudah terpakai?
+**Port sudah terpakai?**
 ```bash
 pkill -f "next dev"
 podman compose restart
@@ -165,6 +213,18 @@ podman compose restart
 ---
 
 ## 📝 Requirements
+
+### Windows
+
+| Software | Versi Minimal |
+|----------|--------------|
+| Windows | 10/11 |
+| Docker Desktop | Latest |
+| ATAU XAMPP | PHP 8.2 |
+| RAM | 2GB |
+| Storage | 1GB |
+
+### Linux
 
 | Software | Versi Minimal |
 |----------|--------------|
